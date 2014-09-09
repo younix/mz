@@ -80,7 +80,7 @@ byteSwap(u_int32_t *buf, unsigned words)
 
 	do {
 		*buf++ = (u_int32_t)((unsigned)p[3] << 8 | p[2]) << 16 |
-			((unsigned)p[1] << 8 | p[0]);
+		    ((unsigned)p[1] << 8 | p[0]);
 		p += 4;
 	} while (--words);
 }
@@ -117,9 +117,9 @@ MD5Update(struct MD5Context *ctx, const char *buf, unsigned len)
 
 	t = ctx->bytes[0];
 	if ((ctx->bytes[0] = t + len) < t)
-		ctx->bytes[1]++;        /* Carry from low to high */
+		ctx->bytes[1]++;	/* Carry from low to high */
 
-	t = 64 - (t & 0x3f);    /* Space available in ctx->in (at least 1) */
+	t = 64 - (t & 0x3f);	/* Space available in ctx->in (at least 1) */
 	if (t > len) {
 		memcpy((u_int8_t *)ctx->in + 64 - t, buf, len);
 		return;
@@ -151,7 +151,7 @@ MD5Update(struct MD5Context *ctx, const char *buf, unsigned len)
 void
 MD5Final(u_int8_t digest[16], struct MD5Context *ctx)
 {
-	int count = ctx->bytes[0] & 0x3f;       /* Number of bytes in ctx->in */
+	int count = ctx->bytes[0] & 0x3f;	/* Number of bytes in ctx->in */
 	u_int8_t *p = (u_int8_t *)ctx->in + count;
 
 	/* Set the first char of padding to 0x80.  There is always room. */
@@ -160,7 +160,7 @@ MD5Final(u_int8_t digest[16], struct MD5Context *ctx)
 	/* Bytes of padding needed to make 56 bytes (-8..55) */
 	count = 56 - 1 - count;
 
-	if (count < 0) {        /* Padding forces an extra block */
+	if (count < 0) {	/* Padding forces an extra block */
 		memset(p, 0, count + 8);
 		byteSwap(ctx->in, 16);
 		MD5Transform(ctx->buf, ctx->in);
@@ -177,7 +177,7 @@ MD5Final(u_int8_t digest[16], struct MD5Context *ctx)
 
 	byteSwap(ctx->buf, 4);
 	memcpy(digest, ctx->buf, 16);
-	memset(ctx, 0, sizeof(*ctx));   /* In case it's sensitive */
+	memset(ctx, 0, sizeof(*ctx));	/* In case it's sensitive */
 }
 
 /* The four core functions - F1 is optimized somewhat */
@@ -330,7 +330,7 @@ main(int argc, char *argv[])
 	}
 
 	for (i = 0; i < DIGLEN; i++) {
-		if ((argv[0][i] < 0x30) || (argv[0][i] > (0x30+0x2B-1))) {
+		if ((argv[0][i] < 0x30) || (argv[0][i] > (0x30 + 0x2B - 1))) {
 			printf("%s", usage);
 			return EXIT_FAILURE;
 		}
