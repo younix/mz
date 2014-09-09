@@ -68,7 +68,7 @@ struct MD5Context {
 
 static void MD5Init(struct MD5Context *context);
 static void MD5Update(struct MD5Context *context,
-                      u_int8_t const *buf, unsigned len);
+                      const char *buf, unsigned len);
 static void MD5Final(unsigned char digest[16], struct MD5Context *context);
 static void MD5Transform(u_int32_t buf[4], u_int32_t const in[16]);
 
@@ -109,7 +109,7 @@ MD5Init(struct MD5Context *ctx)
  * of bytes.
  */
 void
-MD5Update(struct MD5Context *ctx, u_int8_t const *buf, unsigned len)
+MD5Update(struct MD5Context *ctx, const char *buf, unsigned len)
 {
         u_int32_t t;
 
