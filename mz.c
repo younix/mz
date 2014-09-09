@@ -57,8 +57,8 @@
 #include <err.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <time.h>
 #include <string.h> /* for memcpy() */
+#include <time.h>
 
 struct MD5Context {
 	u_int32_t buf[4];
