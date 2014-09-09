@@ -313,7 +313,7 @@ main(int argc, char *argv[])
 			break;
 		default:
 			printf("%s", usage);
-			return 1;
+			return EXIT_FAILURE;
 		}
 	}
 	argc -= optind;
@@ -321,18 +321,18 @@ main(int argc, char *argv[])
 
 	if (argc != 1) {
 		printf("%s", usage);
-		return 1;
+		return EXIT_FAILURE;
 	}
 
 	if (strlen(argv[0]) != DIGLEN) {
 		printf("%s", usage);
-		return 2;
+		return EXIT_FAILURE;
 	}
 
 	for (i = 0; i < DIGLEN; i++) {
 		if ((argv[0][i] < 0x30) || (argv[0][i] > (0x30+0x2B-1))) {
 			printf("%s", usage);
-			return 3;
+			return EXIT_FAILURE;
 		}
 	}
 
@@ -356,5 +356,5 @@ main(int argc, char *argv[])
 		printf("RESPONSE: ");
 	printf("%s\n", response);
 
-	return 0;
+	return EXIT_SUCCESS;
 }
