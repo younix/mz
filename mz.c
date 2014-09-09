@@ -306,11 +306,12 @@ main(int argc, char *argv[])
 	int ch;
 	int quiet = 0;
 
-	while ((ch = getopt(argc, argv, "q")) != -1) {
+	while ((ch = getopt(argc, argv, "hq")) != -1) {
 		switch (ch) {
 		case 'q':
 			quiet = 1;
 			break;
+		case 'h':
 		default:
 			printf("%s", usage);
 			return EXIT_FAILURE;
