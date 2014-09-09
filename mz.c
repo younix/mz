@@ -59,6 +59,7 @@
 #include <stdlib.h>
 #include <string.h> /* for memcpy() */
 #include <time.h>
+#include <unistd.h>
 
 struct MD5Context {
 	u_int32_t buf[4];
@@ -302,27 +303,43 @@ main(int argc, char *argv[])
 	};
 
 	int i;
+	int ch;
+	int quiet = 0;
 
-	if (argc != 2) {
+	while ((ch = getopt(argc, argv, "q")) != -1) {
+		switch (ch) {
+		case 'q':
+			quiet = 1;
+			break;
+		default:
+			printf("%s", usage);
+			return 1;
+		}
+	}
+	argc -= optind;
+	argv += optind;
+
+	if (argc != 1) {
 		printf("%s", usage);
 		return 1;
 	}
 
-	if (strlen(argv[1]) != DIGLEN) {
+	if (strlen(argv[0]) != DIGLEN) {
 		printf("%s", usage);
 		return 2;
 	}
 
 	for (i = 0; i < DIGLEN; i++) {
-		if ((argv[1][i] < 0x30) || (argv[1][i] > (0x30+0x2B-1))) {
+		if ((argv[0][i] < 0x30) || (argv[0][i] > (0x30+0x2B-1))) {
 			printf("%s", usage);
 			return 3;
 		}
 	}
 
-	printf("CHALLENGE: %s\n", argv[1]);
+	if (quiet == 0)
+		printf("CHALLENGE: %s\n", argv[0]);
 
-	bcopy(argv[1], buf, DIGLEN); 
+	bcopy(argv[0], buf, DIGLEN); 
 	MD5Init(&ctx);
 	MD5Update(&ctx, buf, BUFLEN);
 	MD5Final(digest, &ctx);
@@ -335,7 +352,9 @@ main(int argc, char *argv[])
 	    digest[12]%0x2b+0x30, digest[13]%0x2b+0x30, digest[14]%0x2b+0x30,
 	    digest[15]%0x2b+0x30);
 
-	printf("RESPONSE: %s\n", response);
+	if (quiet == 0)
+		printf("RESPONSE: ");
+	printf("%s\n", response);
 
 	return 0;
 }
